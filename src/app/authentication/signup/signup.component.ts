@@ -69,8 +69,7 @@ export class SignupComponent implements OnInit {
   onSignUp() {
     this.signup.markAllAsTouched()
     if (!this.signup.valid) {
-      console.log(JSON.stringify(this.signup.value))
-      alert('Form not valid.')
+      console.error('Form not valid.')
     } else {
       this.authService.SignUp(this.signup.value)
       // const { first_name, last_name, email, role, confirm_password, password } = this.signup.value

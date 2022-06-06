@@ -2,12 +2,13 @@ import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { collection, query, where } from "firebase/firestore";
 import {
-  AngularFirestore,
+  AngularFirestore, DocumentData,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import {SignupModel} from "../../authentication/models/signup-model";
-import {sign} from "crypto";
 import {getDocs, getFirestore} from "@angular/fire/firestore";
+import firebase from "firebase/compat";
+import QuerySnapshot = firebase.firestore.QuerySnapshot;
 @Injectable({
   providedIn: 'root',
 })
@@ -19,6 +20,7 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
+    // TODO: Review later
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
@@ -34,23 +36,23 @@ export class AuthService {
   }
 
   // Sign in with email/password
-  SignIn(email: string, password: string) {
-    return this.afAuth
+  async SignIn(email: string, password: string) {
+    let valid = false;
+    await this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['signup']);
-        });
         this.SetUserData(result.user);
+        valid = true;
       })
       .catch((error) => {
-        window.alert(error.message);
+        console.error(error.message);
       });
+    return valid;
   }
 
   // Sign up with email/password
-  SignUp(signupModel: SignupModel) {
-    return this.afAuth
+  SignUp(signupModel: SignupModel)  {
+     this.afAuth
       .createUserWithEmailAndPassword(signupModel.email, signupModel.password)
       .then((result) => {
         this.afs.collection("usersCollection")
@@ -62,22 +64,23 @@ export class AuthService {
             phone: signupModel.phone,
             role: signupModel.role,
           })
-        /* Call the SendVerificaitonMail() function when new user sign
-        up and returns promise */
-        // this.SendVerificationMail();
         console.log('------returned user--------', result.user);
         this.SetUserData(result.user);
-        this.router.navigate(['login'])
       })
       .catch((error) => {
-        window.alert(error.message);
+        console.error(error.message);
       });
   }
 
   // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    return user !== null;
+  }
+
+  get isAdmin():boolean{
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user !== null && user.role === "admin";
   }
 
   SetUserData(user: any) {
@@ -86,9 +89,18 @@ export class AuthService {
 
     // Create a query against the collection.
     const q = query(userCollectionRef, where("uid", "==", user.uid));
-    getDocs(q).then(result => {
+    getDocs(q).then(result =>  {
       result.forEach(doc => {
         console.log('------user data------', JSON.stringify(doc.data()));
+        const userData: SignupModel = doc.data() as SignupModel;
+        let userFromStorage = JSON.parse(localStorage.getItem('user')!)
+        let updatedUser = { ...userFromStorage, ...userData }
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+          if (userData.role === 'admin') {
+            this.router.navigate(['admin']);
+          } else {
+            this.router.navigate(['user']);
+          }
       })
     });
 
@@ -96,7 +108,6 @@ export class AuthService {
     // this.afs.collection(
     //   "usersCollection",
     // ref=> ref.where('uid', '==', user.uid)).get().subscribe(data => {
-    //   debugger;
     //   console.log(data)
     // })
   }
@@ -104,7 +115,7 @@ export class AuthService {
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['sign-in']);
+      this.router.navigate(['login']);
     });
   }
 }

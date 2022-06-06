@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../shared/services/auth.service";
 import {AbstractControl, FormBuilder, Validators} from "@angular/forms";
-import Validation from "../../utils/validation";
 
 @Component({
   selector: 'app-login',
@@ -15,6 +14,8 @@ export class LoginComponent implements OnInit {
     public authService: AuthService
   ) { }
 
+  valid = true;
+
   login = this.fb.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
@@ -27,15 +28,12 @@ export class LoginComponent implements OnInit {
     return this.login.controls;
   }
 
-  onLogin() {
+  async onLogin() {
     this.login.markAllAsTouched()
     if (!this.login.valid) {
-      console.log(JSON.stringify(this.login.value))
-      alert('Form not valid.')
+      console.error('Form not valid.')
     } else {
-      this.authService.SignIn(this.f['email'].value, this.f['password'].value).then(() => {
-        console.log('---------User Login Successful---------');
-      })
+      this.valid = await this.authService.SignIn(this.f['email'].value, this.f['password'].value)
     }
   }
 }

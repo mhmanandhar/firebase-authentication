@@ -5,7 +5,8 @@
         <div class="card shadow">
           <div class="card-body mx-auto" [formGroup]="login">
             <p class="text-center">Login to Advalent</p>
-            <form >
+            <small *ngIf="!valid" class="text-danger">Either username or password is not correct</small>
+            <form class="pt-2">
               <div class="form-group">
                 <input name="email" class="form-control" placeholder="Email address" type="email" formControlName="email">
                 <small *ngIf="f['email'].touched && f['email'].errors?.['required']" class="text-danger"> Email is required.</small>
