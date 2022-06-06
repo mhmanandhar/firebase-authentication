@@ -4,6 +4,7 @@ import {SignupModel} from "../models/signup-model";
 import {HttpService} from "../../service/http-service";
 import {ScriptService} from "../../service/script-service";
 import Validation from "../../utils/validation";
+import { AuthService } from "../../shared/services/auth.service";
 
 @Component({
   selector: 'app-signup',
@@ -32,7 +33,8 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _http_service: HttpService,
-    private _script_service: ScriptService
+    private _script_service: ScriptService,
+    public authService: AuthService
   ) {
     this._script_service.loadScript('intlTelInput').then(() => {
       console.log('International phone code service loaded.')
@@ -64,39 +66,25 @@ export class SignupComponent implements OnInit {
     return this.signup.controls;
   }
 
-  onClick() {
-
-  }
-
   onSignUp() {
     this.signup.markAllAsTouched()
     if (!this.signup.valid) {
       console.log(JSON.stringify(this.signup.value))
       alert('Form not valid.')
     } else {
-      const { first_name, last_name, email, role, confirm_password, password } = this.signup.value
-      let error = document.getElementById('invalid-phone');
-      let phone = ''
-      if (error) {
-        // @ts-ignore
-        if (!this.phoneInput.isValidNumber()) {
-          error.style.display = ''
-        } else {
-          // @ts-ignore
-          phone = this.phoneInput.getNumber();
-          error.style.display = 'none'
-        }
-      }
-      let payload = {
-        first_name,
-        last_name,
-        phone,
-        email,
-        role,
-        password,
-        confirm_password
-      }
-      console.log(payload)
+      this.authService.SignUp(this.signup.value)
+      // const { first_name, last_name, email, role, confirm_password, password } = this.signup.value
+      // let error = document.getElementById('invalid-phone');
+      // let payload = {
+      //   first_name,
+      //   last_name,
+      //   phone,
+      //   email,
+      //   role,
+      //   password,
+      //   confirm_password
+      // }
+      // console.log(payload)
       // this._http_service.get('https://jsonplaceholder.typicode.com/todos/1').subscribe(data => {
       //   alert(JSON.stringify(data))
       // });
