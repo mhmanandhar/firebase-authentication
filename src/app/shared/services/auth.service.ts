@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { collection, query, where } from "firebase/firestore";
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import {SignupModel} from "../../authentication/models";
+import {SignupModel, UserModel} from "../../authentication/models";
 import {getDocs, getFirestore} from "@angular/fire/firestore";
 @Injectable({
   providedIn: 'root',
@@ -18,10 +18,14 @@ export class AuthService {
   ) {}
 
   // Sign in with email/password
-  async SignIn(email: string, password: string) {
+  async SignIn(username: string, password: string) {
     let valid = false;
+    let existing_email = await this.getEmailByUsername(username)
+    if (existing_email) {
+      username = existing_email
+    }
     await this.afAuth
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(username, password)
       .then((result) => {
         this.SetUserData(result.user);
         valid = true;
@@ -42,6 +46,7 @@ export class AuthService {
             uid: result?.user?.uid,
             first_name: signupModel.first_name,
             last_name: signupModel.last_name,
+            username: signupModel.username,
             email: signupModel.email,
             phone: signupModel.phone,
             role: signupModel.role,
@@ -92,6 +97,35 @@ export class AuthService {
     //   console.log(data)
     // })
   }
+
+  // check if username is available or not
+  async getEmailByUsername(username: string) {
+    const db = getFirestore()
+    const userCollectionRef = collection(db, "usersCollection");
+    let email = ''
+    const q = query(userCollectionRef, where("username", "==", username));
+    await getDocs(q).then(result =>  {
+      if (result.docs.length > 0) {
+        email = result.docs[0].data()['email']
+      }
+    });
+    return email;
+  }
+
+  // check if username is available or not
+  async isUsernameValid(username: string) {
+    const db = getFirestore()
+    const userCollectionRef = collection(db, "usersCollection");
+    let valid = true
+    const q = query(userCollectionRef, where("username", "==", username));
+    await getDocs(q).then(result =>  {
+      if (result.docs.length > 0) {
+        valid = false
+      }
+    });
+    return valid;
+  }
+
   // Sign out
   SignOut() {
     return this.afAuth.signOut().then(() => {

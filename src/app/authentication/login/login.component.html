@@ -8,12 +8,11 @@
             <small *ngIf="!valid" class="text-danger">Either username or password is not correct</small>
             <form class="pt-2">
               <div class="form-group">
-                <input name="email" class="form-control" placeholder="Email address" type="email" formControlName="email">
-                <small *ngIf="f['email'].touched && f['email'].errors?.['required']" class="text-danger"> Email is required.</small>
-                <small *ngIf="f['email'].touched && f['email'].errors?.['email']" class="text-danger"> Incorrect Email Format.</small>
+                <input name="username" class="form-control" placeholder="Email address / Username" type="text" formControlName="username">
+                <small *ngIf="f['username'].touched && f['username'].errors?.['required']" class="text-danger"> Email/Username is required.</small>
               </div>
               <div class="form-group">
-                <input name="password" class="form-control" placeholder="Create password" type="password" formControlName="password">
+                <input name="password" class="form-control" placeholder="Input password" type="password" formControlName="password">
                 <small *ngIf="f['password'].touched && f['password'].errors?.['required']" class="text-danger"> Password is required.</small>
                 <small *ngIf="f['password'].touched && f['password'].errors?.['minlength']" class="text-danger"> Password must be greater than 8 characters.</small>
               </div>

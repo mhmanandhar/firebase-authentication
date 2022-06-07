@@ -15,6 +15,12 @@
                 <small *ngIf="f['last_name'].touched && f['last_name'].errors?.['required']" class="text-danger"> Last Name is required.</small>
               </div>
               <div class="form-group">
+                <input name="username" class="form-control" placeholder="username" type="text" formControlName="username">
+                <small *ngIf="f['username'].touched && f['username'].errors?.['required']" class="text-danger"> Username is required.</small>
+                <small *ngIf="f['username'].touched && f['username'].errors?.['pattern']" class="text-danger"> Special character not allowed.</small>
+                <small id="invalid-username" style="display: none" class="text-danger"> Username is not available.</small>
+              </div>
+              <div class="form-group">
                 <input id="phone" name="phone" class="form-control" type="tel" formControlName="phone"><br>
                 <small *ngIf="f['phone'].touched && f['phone'].errors?.['required']" class="text-danger"> Phone number is required.</small>
                 <small id="invalid-phone" style="display: none" class="text-danger"> Phone number is not valid.</small>
@@ -42,7 +48,6 @@
               </div>
               <div class="form-group text-center">
                 <button type="submit" class="btn btn-primary btn-block" (click)="onSignUp()"> Create Account </button>
-<!--                <button type="submit" class="btn btn-primary btn-block" (click)="onSignUp()"> Create Account </button>-->
               </div>
               <p class="text-center">Have an account?
                 <a routerLink="/login">Log In</a>

@@ -17,7 +17,6 @@ export class UserComponent implements OnInit {
 
   testConsoleLog(userFirstName: string) {
     console.log(`Welcome user: ${userFirstName}`)
-    this.userData.first_name = 'TATETSETSE'
   }
 
 }

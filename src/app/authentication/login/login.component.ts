@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   valid = true;
 
   login = this.fb.group({
-    email: ['', Validators.required],
+    username: ['', Validators.required],
     password: ['', Validators.required],
   })
 
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     if (!this.login.valid) {
       console.error('Form not valid.')
     } else {
-      this.valid = await this.authService.SignIn(this.f['email'].value, this.f['password'].value)
+      this.valid = await this.authService.SignIn(this.f['username'].value, this.f['password'].value)
     }
   }
 }

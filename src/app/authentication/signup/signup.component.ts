@@ -15,9 +15,12 @@ import { AuthService } from "../../shared/services/auth.service";
 
 export class SignupComponent implements OnInit {
 
+  usernameRegex = '^[a-zA-Z0-9_.-]*$'
+
   signup = this.fb.group({
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
+    username: ['', [Validators.required, Validators.pattern(this.usernameRegex)]],
     phone: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     role: ['normal_user'],
@@ -49,14 +52,20 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
     this.f['phone'].valueChanges.subscribe(value => {
-      let error = document.getElementById('invalid-phone');
-      if (error) {
+      let invalidPhone = document.getElementById('invalid-phone');
+      if (invalidPhone) {
         // @ts-ignore
         if (this.phoneInput && !this.phoneInput.isValidNumber()) {
-          error.style.display = ''
+          invalidPhone.style.display = ''
         } else {
-          error.style.display = 'none'
+          invalidPhone.style.display = 'none'
         }
+      }
+    })
+    this.f['username'].valueChanges.subscribe(value => {
+      let invalidUsername = document.getElementById('invalid-username');
+      if (invalidUsername) {
+        invalidUsername.style.display = 'none'
       }
     })
   }
@@ -65,15 +74,22 @@ export class SignupComponent implements OnInit {
     return this.signup.controls;
   }
 
-  onSignUp() {
+  async onSignUp() {
     this.signup.markAllAsTouched()
     if (!this.signup.valid) {
       console.error('Form not valid.')
     } else {
-      // @ts-ignore
-      let phone = this.phoneInput.getNumber();
-      this.signup.controls['phone'].setValue(phone);
-      this.authService.SignUp(this.signup.value)
+      if (await this.authService.isUsernameValid(this.signup.controls['username'].value)) {
+        // @ts-ignore
+        let phone = this.phoneInput.getNumber();
+        this.signup.controls['phone'].setValue(phone);
+        this.authService.SignUp(this.signup.value)
+      } else {
+        let invalidUsername = document.getElementById('invalid-username');
+        if (invalidUsername) {
+          invalidUsername.style.display = ''
+        }
+      }
     }
   }
 
