@@ -35,11 +35,11 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private _http_service: HttpService,
-    private _script_service: ScriptService,
+    private http_service: HttpService,
+    private script_service: ScriptService,
     public authService: AuthService
   ) {
-    this._script_service.loadScript('intlTelInput').then(() => {
+    this.script_service.loadScript('intlTelInput').then(() => {
       console.log('International phone code service loaded.')
       const phoneInputField:any = document.getElementById('phone');
       this.phoneInput = (<any>window).intlTelInput(phoneInputField, {
@@ -96,8 +96,9 @@ export class SignupComponent implements OnInit {
     }
   }
 
+  // Test for http_service
   getUserData() {
-    // this._http_service.get('https://jsonplaceholder.typicode.com/todos/1').subscribe(data => {
+    // this.http_service.get('https://jsonplaceholder.typicode.com/todos/1').subscribe(data => {
     //   alert(JSON.stringify(data))
     // });
   }
