@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { SignupHeaderComponent } from './signup-header/signup-header.component';
 
 
@@ -17,7 +17,8 @@ import { SignupHeaderComponent } from './signup-header/signup-header.component';
     imports: [
         CommonModule,
         AuthenticationRoutingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormsModule
     ]
 })
 export class AuthenticationModule { }

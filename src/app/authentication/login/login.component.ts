@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../shared/services/auth.service";
-import {AbstractControl, FormBuilder, Validators} from "@angular/forms";
+import { FormBuilder, NgForm, } from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -17,25 +17,19 @@ export class LoginComponent implements OnInit {
   isUsernamePasswordValid = true;
   loading = false;
 
-  login = this.fb.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
-  })
+  username: string = ''
+  password: string = ''
 
   ngOnInit(): void {
   }
 
-  get f(): { [key: string]: AbstractControl } {
-    return this.login.controls;
-  }
-
-  async onLogin() {
+  async onLogin(f: NgForm) {
     this.loading = true;
-    this.login.markAllAsTouched()
-    if (!this.login.valid) {
-      console.error('Form not valid.')
+    f.form.markAllAsTouched()
+    if (!f.valid) {
+      console.error('Form not valid')
     } else {
-      this.isUsernamePasswordValid = await this.authService.SignIn(this.f['username'].value, this.f['password'].value)
+      this.isUsernamePasswordValid = await this.authService.SignIn(this.username, this.password)
     }
     this.loading = false;
   }
