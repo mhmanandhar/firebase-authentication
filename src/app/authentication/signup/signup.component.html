@@ -47,7 +47,7 @@
                 <small *ngIf="f['confirm_password'].touched && f['confirm_password'].errors?.['matching']" class="text-danger"> Confirm Password does not match.</small>
               </div>
               <div class="form-group text-center">
-                <button type="submit" class="btn btn-primary btn-block" (click)="onSignUp()"> Create Account </button>
+                <button type="submit" class="btn btn-primary btn-block" (click)="onSignUp()" [disabled]="loading"> Create Account </button>
               </div>
               <p class="text-center">Have an account?
                 <a routerLink="/login">Log In</a>

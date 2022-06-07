@@ -16,6 +16,7 @@ import { AuthService } from "../../shared/services/auth.service";
 export class SignupComponent implements OnInit {
 
   usernameRegex = '^[a-zA-Z0-9_.-]*$'
+  loading = false
 
   signup = this.fb.group({
     first_name: ['', Validators.required],
@@ -75,6 +76,7 @@ export class SignupComponent implements OnInit {
   }
 
   async onSignUp() {
+    this.loading = true
     this.signup.markAllAsTouched()
     if (!this.signup.valid) {
       console.error('Form not valid.')
@@ -83,13 +85,14 @@ export class SignupComponent implements OnInit {
         // @ts-ignore
         let phone = this.phoneInput.getNumber();
         this.signup.controls['phone'].setValue(phone);
-        this.authService.SignUp(this.signup.value)
+        await this.authService.SignUp(this.signup.value)
       } else {
         let invalidUsername = document.getElementById('invalid-username');
         if (invalidUsername) {
           invalidUsername.style.display = ''
         }
       }
+      this.loading = false
     }
   }
 

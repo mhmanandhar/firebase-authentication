@@ -14,7 +14,8 @@ export class LoginComponent implements OnInit {
     public authService: AuthService
   ) { }
 
-  valid = true;
+  isUsernamePasswordValid = true;
+  loading = false;
 
   login = this.fb.group({
     username: ['', Validators.required],
@@ -29,11 +30,13 @@ export class LoginComponent implements OnInit {
   }
 
   async onLogin() {
+    this.loading = true;
     this.login.markAllAsTouched()
     if (!this.login.valid) {
       console.error('Form not valid.')
     } else {
-      this.valid = await this.authService.SignIn(this.f['username'].value, this.f['password'].value)
+      this.isUsernamePasswordValid = await this.authService.SignIn(this.f['username'].value, this.f['password'].value)
     }
+    this.loading = false;
   }
 }
