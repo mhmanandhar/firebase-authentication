@@ -1,1 +1,5 @@
-<p>admin works!</p>
+<app-user-detail
+  userType="Admin User"
+  [userData]="userData"
+  (consoleLogUser)="testConsoleLog($event)"
+></app-user-detail>

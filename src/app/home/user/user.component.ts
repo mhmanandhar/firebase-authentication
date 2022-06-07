@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {UserModel} from "../../authentication/models";
 
 @Component({
   selector: 'app-user',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-
-  constructor() { }
+  userData: UserModel;
+  constructor() {
+    this.userData = JSON.parse(localStorage.getItem('user')!)
+  }
 
   ngOnInit(): void {
+  }
+
+  testConsoleLog(userFirstName: string) {
+    console.log(`Welcome user: ${userFirstName}`)
+    this.userData.first_name = 'TATETSETSE'
   }
 
 }

@@ -1,14 +1,10 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { collection, query, where } from "firebase/firestore";
-import {
-  AngularFirestore, DocumentData,
-} from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import {SignupModel} from "../../authentication/models/signup-model";
+import {SignupModel} from "../../authentication/models";
 import {getDocs, getFirestore} from "@angular/fire/firestore";
-import firebase from "firebase/compat";
-import QuerySnapshot = firebase.firestore.QuerySnapshot;
 @Injectable({
   providedIn: 'root',
 })
@@ -19,21 +15,7 @@ export class AuthService {
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
-  ) {
-    // TODO: Review later
-    /* Saving user data in localstorage when
-    logged in and setting up null when logged out */
-    this.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
-      } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
-      }
-    });
-  }
+  ) {}
 
   // Sign in with email/password
   async SignIn(email: string, password: string) {
@@ -93,8 +75,7 @@ export class AuthService {
       result.forEach(doc => {
         console.log('------user data------', JSON.stringify(doc.data()));
         const userData: SignupModel = doc.data() as SignupModel;
-        let userFromStorage = JSON.parse(localStorage.getItem('user')!)
-        let updatedUser = { ...userFromStorage, ...userData }
+        let updatedUser = { ...user, ...userData }
         localStorage.setItem("user", JSON.stringify(updatedUser));
           if (userData.role === 'admin') {
             this.router.navigate(['admin']);

@@ -1,0 +1,15 @@
+<div class="px-2">
+  <h2> {{ userType }} </h2>
+</div>
+<div class="card p-2 m-2" style="width: 25rem;">
+  <div class="card-header">
+    Your Profile
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">First Name: <span class="fw-bold">{{ userData?.first_name }}</span></li>
+    <li class="list-group-item">Last Name: <span class="fw-bold">{{ userData?.last_name }}</span></li>
+    <li class="list-group-item">Phone Number: <span class="fw-bold">{{ userData?.phone }}</span></li>
+    <li class="list-group-item">Email: <span class="fw-bold">{{ userData?.email }}</span></li>
+    <li class="list-group-item">Role: <span class="fw-bold">{{ userData?.role === 'admin' ? 'Admin' : 'Normal User' }}</span></li>
+  </ul>
+</div>

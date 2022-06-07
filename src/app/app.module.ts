@@ -15,12 +15,14 @@ import {AngularFireDatabaseModule} from "@angular/fire/compat/database";
 import { AuthService } from "./shared/services/auth.service";
 import { AdminComponent } from './home/admin/admin.component';
 import { UserComponent } from './home/user/user.component';
+import { UserDetailComponent } from './home/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminComponent,
     UserComponent,
+    UserDetailComponent,
   ],
   imports: [
     BrowserModule,

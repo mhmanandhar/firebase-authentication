@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, Validators} from "@angular/forms";
-import {SignupModel} from "../models/signup-model";
 import {HttpService} from "../../service/http-service";
 import {ScriptService} from "../../service/script-service";
 import Validation from "../../utils/validation";
@@ -71,25 +70,18 @@ export class SignupComponent implements OnInit {
     if (!this.signup.valid) {
       console.error('Form not valid.')
     } else {
+      // @ts-ignore
+      let phone = this.phoneInput.getNumber();
+      this.signup.controls['phone'].setValue(phone);
       this.authService.SignUp(this.signup.value)
-      // const { first_name, last_name, email, role, confirm_password, password } = this.signup.value
-      // let error = document.getElementById('invalid-phone');
-      // let payload = {
-      //   first_name,
-      //   last_name,
-      //   phone,
-      //   email,
-      //   role,
-      //   password,
-      //   confirm_password
-      // }
-      // console.log(payload)
-      // this._http_service.get('https://jsonplaceholder.typicode.com/todos/1').subscribe(data => {
-      //   alert(JSON.stringify(data))
-      // });
     }
   }
 
+  getUserData() {
+    // this._http_service.get('https://jsonplaceholder.typicode.com/todos/1').subscribe(data => {
+    //   alert(JSON.stringify(data))
+    // });
+  }
 }
 
 
