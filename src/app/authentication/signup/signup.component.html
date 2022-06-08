@@ -1,29 +1,33 @@
 <section class="pt-5 pb-5 mt-0 align-items-center d-flex">
   <div class="container-fluid">
     <div class="row  justify-content-center align-items-center d-flex-row h-100">
-      <div class="col-12 col-md-4 col-lg-3 h-50 ">
+      <div class="col-12 col-md-4 col-lg-6 h-50 ">
         <div class="card shadow">
           <div class="card-body mx-auto">
             <app-signup-header [firstName]="f['first_name'].value" [lastName]="f['last_name'].value"></app-signup-header>
             <form [formGroup]="signup">
-              <div class="form-group">
-                <input name="first_name" class="form-control" placeholder="First name" type="text" formControlName="first_name">
-                <small *ngIf="f['first_name'].touched && f['first_name'].errors?.['required']" class="text-danger"> First Name is required.</small>
+              <div class="row">
+                <div class="col form-group">
+                  <input name="first_name" class="form-control" placeholder="First name" type="text" formControlName="first_name">
+                  <small *ngIf="f['first_name'].touched && f['first_name'].errors?.['required']" class="text-danger"> First Name is required.</small>
+                </div>
+                <div class="col form-group">
+                  <input name="last_name" class="form-control" placeholder="Last name" type="text" formControlName="last_name">
+                  <small *ngIf="f['last_name'].touched && f['last_name'].errors?.['required']" class="text-danger"> Last Name is required.</small>
+                </div>
               </div>
-              <div class="form-group">
-                <input name="last_name" class="form-control" placeholder="Last name" type="text" formControlName="last_name">
-                <small *ngIf="f['last_name'].touched && f['last_name'].errors?.['required']" class="text-danger"> Last Name is required.</small>
-              </div>
-              <div class="form-group">
-                <input name="username" class="form-control" placeholder="username" type="text" formControlName="username">
-                <small *ngIf="f['username'].touched && f['username'].errors?.['required']" class="text-danger"> Username is required.</small>
-                <small *ngIf="f['username'].touched && f['username'].errors?.['pattern']" class="text-danger"> Special character not allowed.</small>
-                <small id="invalid-username" style="display: none" class="text-danger"> Username is not available.</small>
-              </div>
-              <div class="form-group">
+              <div class="row">
+                <div class="col form-group">
+                  <input name="username" class="form-control" placeholder="username" type="text" formControlName="username">
+                  <small *ngIf="f['username'].touched && f['username'].errors?.['required']" class="text-danger"> Username is required.</small>
+                  <small *ngIf="f['username'].touched && f['username'].errors?.['pattern']" class="text-danger"> Special character not allowed.</small>
+                  <small id="invalid-username" style="display: none" class="text-danger"> Username is not available.</small>
+                </div>
+                <div class="col form-group">
                 <input id="phone" name="phone" class="form-control" type="tel" formControlName="phone"><br>
                 <small *ngIf="f['phone'].touched && f['phone'].errors?.['required']" class="text-danger"> Phone number is required.</small>
                 <small id="invalid-phone" style="display: none" class="text-danger"> Phone number is not valid.</small>
+              </div>
               </div>
               <div class="form-group">
                 <input name="email" class="form-control" placeholder="Email address" type="email" formControlName="email">
@@ -36,15 +40,17 @@
                   <option value="admin">Admin</option>
                 </select>
               </div>
-              <div class="form-group">
-                <input name="password" class="form-control" placeholder="Create password" type="password" formControlName="password">
-                <small *ngIf="f['password'].touched && f['password'].errors?.['required']" class="text-danger"> Password is required.</small>
-                <small *ngIf="f['password'].touched && f['password'].errors?.['minlength']" class="text-danger"> Password must be greater than 8 characters.</small>
-              </div>
-              <div class="form-group">
+              <div class="row">
+                <div class="col form-group">
+                  <input name="password" class="form-control" placeholder="Create password" type="password" formControlName="password">
+                  <small *ngIf="f['password'].touched && f['password'].errors?.['required']" class="text-danger"> Password is required.</small>
+                  <small *ngIf="f['password'].touched && f['password'].errors?.['minlength']" class="text-danger"> Password must be greater than 8 characters.</small>
+                </div>
+                <div class="col form-group">
                 <input name="confirm_password" class="form-control" placeholder="Repeat password" type="password"  formControlName="confirm_password">
                 <small *ngIf="f['confirm_password'].touched && f['confirm_password'].errors?.['required']" class="text-danger"> Confirm Password is required.</small>
                 <small *ngIf="f['confirm_password'].touched && f['confirm_password'].errors?.['matching']" class="text-danger"> Confirm Password does not match.</small>
+              </div>
               </div>
               <div class="form-group text-center">
                 <button type="submit" class="btn btn-primary btn-block" (click)="onSignUp()" [disabled]="loading"> Create Account </button>
