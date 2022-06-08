@@ -92,8 +92,8 @@ export class SignupComponent implements OnInit {
           invalidUsername.style.display = ''
         }
       }
-      this.loading = false
     }
+    this.loading = false
   }
 
   // Test for http_service
