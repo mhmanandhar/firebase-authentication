@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormBuilder, Validators} from "@angular/forms";
-import {HttpService} from "../../service/http-service";
-import {ScriptService} from "../../service/script-service";
+import { AbstractControl, FormBuilder, Validators } from "@angular/forms";
+import { HttpService, ScriptService, AuthService } from "../../shared";
 import Validation from "../../utils/validation";
-import { AuthService } from "../../shared/services/auth.service";
 
 @Component({
   selector: 'app-signup',
