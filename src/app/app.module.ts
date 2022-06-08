@@ -12,7 +12,6 @@ import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 import {AngularFireStorageModule} from "@angular/fire/compat/storage";
 import {AngularFireDatabaseModule} from "@angular/fire/compat/database";
-import { AuthService } from "./shared/services/auth.service";
 import { AdminComponent } from './home/admin/admin.component';
 import { UserComponent } from './home/user/user.component';
 import { UserDetailComponent } from './home/user-detail/user-detail.component';
@@ -35,7 +34,7 @@ import { UserDetailComponent } from './home/user-detail/user-detail.component';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
   ],
-  providers: [HttpService, AuthService],
+  providers: [HttpService],
   bootstrap: [AppComponent]
 })
 
