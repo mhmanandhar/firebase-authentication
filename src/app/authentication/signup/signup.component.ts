@@ -17,13 +17,14 @@ export class SignupComponent implements OnInit {
 
   usernameRegex = '^[a-zA-Z0-9_.-]*$'
   loading = false
+  formError = undefined
 
   signup = this.fb.group({
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
     username: ['', [Validators.required, Validators.pattern(this.usernameRegex)]],
     phone: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
     role: ['normal_user'],
     password: ['', [Validators.required, Validators.minLength(8)]],
     confirm_password: ['', Validators.required],
@@ -85,7 +86,9 @@ export class SignupComponent implements OnInit {
         // @ts-ignore
         let phone = this.phoneInput.getNumber();
         this.signup.controls['phone'].setValue(phone);
-        await this.authService.SignUp(this.signup.value)
+        await this.authService.SignUp(this.signup.value).catch(error=> {
+          this.formError = error.message
+        })
       } else {
         let invalidUsername = document.getElementById('invalid-username');
         if (invalidUsername) {

@@ -68,9 +68,6 @@ export class AuthService {
           });
         }
       })
-      .catch((error) => {
-        console.error(error.message);
-      });
   }
 
   getUserRefById(id: string): AngularFirestoreDocument<any> {
